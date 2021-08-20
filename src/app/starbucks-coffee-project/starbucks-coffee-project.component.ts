@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
+// import * as d3Tip from 'd3-tip';
+// import d3Tip from 'd3-tip';
+import * as d3Tip from 'd3-tip';
 
 const MARGIN = { TOP: 10, BOTTOM: 100, RIGHT: 10, LEFT: 100 };
 const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT;
@@ -77,6 +80,7 @@ export class StarbucksCoffeeProjectComponent implements OnInit {
   x: any;
   y: any;
   group: any;
+  tooltip: any;
 
   ngOnInit() {
     this.initSVG();
@@ -93,6 +97,15 @@ export class StarbucksCoffeeProjectComponent implements OnInit {
       .append('g')
       .attr('transform', `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
     this.initLabels();
+    // this.initToolTip();
+  }
+
+  initToolTip() {
+    this.tooltip = d3Tip
+      .default()
+      .attr('class', 'd3-tip')
+      .html(d => 'test');
+    this.group.call(this.tooltip as any);
   }
 
   initLabels() {
@@ -124,7 +137,7 @@ export class StarbucksCoffeeProjectComponent implements OnInit {
       .scaleBand()
       .domain(this.data.map(a => a.month))
       .range([0, WIDTH])
-      .paddingInner(0.4)
+      .paddingInner(0.5)
       .paddingOuter(0.2);
 
     this.y = d3
@@ -202,5 +215,7 @@ export class StarbucksCoffeeProjectComponent implements OnInit {
       .attr('width', this.x.bandwidth)
       .attr('height', d => HEIGHT - this.y(d.revenue))
       .attr('fill', 'grey');
+    // .on('mouseover', this.tooltip.show)
+    // .on('mouseout', this.tooltip.hide);
   }
 }
