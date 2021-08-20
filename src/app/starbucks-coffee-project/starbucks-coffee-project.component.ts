@@ -155,8 +155,43 @@ export class StarbucksCoffeeProjectComponent implements OnInit {
       .append('g')
       .attr('class', 'y axis')
       .call(yAxisCall);
+    this.drawGrid();
     this.drawChart();
   }
+  drawGrid() {
+    const xAxisGrid = d3
+      .axisBottom(this.x)
+      .tickSize(-HEIGHT)
+      .tickFormat('')
+      .ticks(5);
+    const yAxisGrid = d3
+      .axisLeft(this.y)
+      .tickSize(-WIDTH)
+      .tickFormat('')
+      .ticks(5);
+    this.group
+      .append('g')
+      .attr('class', 'x axis-grid')
+      .attr('transform', 'translate(0,' + HEIGHT + ')')
+      .call(xAxisGrid)
+      .style('color', '#e0e0e0');
+    this.group
+      .append('g')
+      .attr('class', 'y axis-grid')
+      .call(yAxisGrid)
+      .style('color', '#e0e0e0');
+    // Create axes.
+    this.group
+      .append('g')
+      .attr('class', 'x axis')
+      .attr('transform', 'translate(0,' + HEIGHT + ')')
+      .call(this.x);
+    this.group
+      .append('g')
+      .attr('class', 'y axis')
+      .call(this.y);
+  }
+
   drawChart() {
     const rects = this.group.selectAll('rect').data(this.data);
     rects
